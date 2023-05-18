@@ -17,6 +17,7 @@ import 'package:webview_flutter_platform_interface/webview_flutter_platform_inte
 
 import 'android_proxy.dart';
 import 'android_webview.dart' as android_webview;
+import 'file_picker_handler.dart';
 import 'instance_manager.dart';
 import 'platform_views_service_proxy.dart';
 import 'weak_reference_utils.dart';
@@ -134,6 +135,8 @@ class AndroidWebViewController extends PlatformWebViewController {
             return weakReference.target!._onShowFileSelectorCallback!(
               FileSelectorParams._fromFileChooserParams(params),
             );
+          } else {
+            return filePickerHandler(FileSelectorParams._fromFileChooserParams(params));
           }
           return <String>[];
         };

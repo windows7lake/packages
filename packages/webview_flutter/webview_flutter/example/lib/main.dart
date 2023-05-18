@@ -31,6 +31,8 @@ The navigation delegate is set to block navigation to the youtube website.
 <ul>
 <ul><a href="https://www.youtube.com/">https://www.youtube.com/</a></ul>
 <ul><a href="https://www.google.com/">https://www.google.com/</a></ul>
+<br><br><br><br>
+<input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" value="cccccccccc"/>
 </ul>
 </body>
 </html>
