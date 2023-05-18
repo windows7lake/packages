@@ -478,6 +478,7 @@ AndroidNavigationDelegateCreationParams _buildCreationParams() {
       createAndroidWebChromeClient: CapturingWebChromeClient.new,
       createAndroidWebViewClient: CapturingWebViewClient.new,
       createDownloadListener: CapturingDownloadListener.new,
+      createScrollListener: CapturingScrollListener.new,
     ),
   );
 }
@@ -514,6 +515,7 @@ class CapturingWebViewClient extends android_webview.WebViewClient {
 class CapturingWebChromeClient extends android_webview.WebChromeClient {
   CapturingWebChromeClient({
     super.onProgressChanged,
+    super.onTitleChanged,
     super.onShowFileChooser,
     super.onPermissionRequest,
     super.binaryMessenger,
@@ -536,4 +538,17 @@ class CapturingDownloadListener extends android_webview.DownloadListener {
   }
   static CapturingDownloadListener lastCreatedListener =
       CapturingDownloadListener(onDownloadStart: (_, __, ___, ____, _____) {});
+}
+
+// Records the last created instance of itself.
+class CapturingScrollListener extends android_webview.ScrollListener {
+  CapturingScrollListener({
+    required super.onScrollOffsetChange,
+    super.binaryMessenger,
+    super.instanceManager,
+  }) : super.detached() {
+    lastCreatedListener = this;
+  }
+  static CapturingScrollListener lastCreatedListener =
+    CapturingScrollListener(onScrollOffsetChange: (_) {});
 }

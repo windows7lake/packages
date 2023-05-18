@@ -66,7 +66,7 @@ public class WebViewHostApiImpl implements WebViewHostApi {
 
   /** Implementation of {@link WebView} that can be used as a Flutter {@link PlatformView}s. */
   @SuppressLint("ViewConstructor")
-  public static class WebViewPlatformView extends WebView implements PlatformView {
+  public static class WebViewPlatformView extends ScrollListenerWebView implements PlatformView {
     // To ease adding callback methods, this value is added prematurely.
     @SuppressWarnings("unused")
     private WebViewFlutterApiImpl api;
@@ -376,6 +376,15 @@ public class WebViewHostApiImpl implements WebViewHostApi {
     final WebView webView = Objects.requireNonNull(instanceManager.getInstance(instanceId));
     webView.setDownloadListener(
         instanceManager.getInstance(Objects.requireNonNull(listenerInstanceId)));
+  }
+
+  @Override
+  public void setScrollListener(@NonNull Long instanceId, @Nullable Long listenerInstanceId) {
+    final WebView webView = Objects.requireNonNull(instanceManager.getInstance(instanceId));
+    if (webView instanceof ScrollListenerWebView) {
+      ((ScrollListenerWebView) webView).setOnScrollListener(
+          instanceManager.getInstance(Objects.requireNonNull(listenerInstanceId)));
+    }
   }
 
   @Override

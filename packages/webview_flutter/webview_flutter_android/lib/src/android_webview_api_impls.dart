@@ -41,6 +41,7 @@ class AndroidWebViewFlutterApis {
   AndroidWebViewFlutterApis({
     JavaObjectFlutterApiImpl? javaObjectFlutterApi,
     DownloadListenerFlutterApiImpl? downloadListenerFlutterApi,
+    ScrollListenerFlutterApiImpl? scrollListenerFlutterApi,
     WebViewClientFlutterApiImpl? webViewClientFlutterApi,
     WebChromeClientFlutterApiImpl? webChromeClientFlutterApi,
     JavaScriptChannelFlutterApiImpl? javaScriptChannelFlutterApi,
@@ -52,6 +53,8 @@ class AndroidWebViewFlutterApis {
         javaObjectFlutterApi ?? JavaObjectFlutterApiImpl();
     this.downloadListenerFlutterApi =
         downloadListenerFlutterApi ?? DownloadListenerFlutterApiImpl();
+    this.scrollListenerFlutterApi =
+        scrollListenerFlutterApi ?? ScrollListenerFlutterApiImpl();
     this.webViewClientFlutterApi =
         webViewClientFlutterApi ?? WebViewClientFlutterApiImpl();
     this.webChromeClientFlutterApi =
@@ -78,6 +81,9 @@ class AndroidWebViewFlutterApis {
   /// Flutter Api for [DownloadListener].
   late final DownloadListenerFlutterApiImpl downloadListenerFlutterApi;
 
+  /// Flutter Api for [ScrollListener].
+  late final ScrollListenerFlutterApiImpl scrollListenerFlutterApi;
+
   /// Flutter Api for [WebViewClient].
   late final WebViewClientFlutterApiImpl webViewClientFlutterApi;
 
@@ -101,6 +107,7 @@ class AndroidWebViewFlutterApis {
     if (!_haveBeenSetUp) {
       JavaObjectFlutterApi.setup(javaObjectFlutterApi);
       DownloadListenerFlutterApi.setup(downloadListenerFlutterApi);
+      ScrollListenerFlutterApi.setup(scrollListenerFlutterApi);
       WebViewClientFlutterApi.setup(webViewClientFlutterApi);
       WebChromeClientFlutterApi.setup(webChromeClientFlutterApi);
       JavaScriptChannelFlutterApi.setup(javaScriptChannelFlutterApi);
@@ -334,6 +341,17 @@ class WebViewHostApiImpl extends WebViewHostApi {
     DownloadListener? listener,
   ) {
     return setDownloadListener(
+      instanceManager.getIdentifier(instance)!,
+      listener != null ? instanceManager.getIdentifier(listener) : null,
+    );
+  }
+
+  /// Helper method to convert instances ids to objects.
+  Future<void> setScrollListenerFromInstance(
+    WebView instance,
+    ScrollListener? listener,
+  ) {
+    return setScrollListener(
       instanceManager.getIdentifier(instance)!,
       listener != null ? instanceManager.getIdentifier(listener) : null,
     );
@@ -841,6 +859,47 @@ class DownloadListenerFlutterApiImpl extends DownloadListenerFlutterApi {
   }
 }
 
+/// Host api implementation for [ScrollListener].
+class ScrollListenerHostApiImpl extends ScrollListenerHostApi {
+  /// Constructs a [ScrollListenerHostApiImpl].
+  ScrollListenerHostApiImpl({
+    super.binaryMessenger,
+    InstanceManager? instanceManager,
+  }) : instanceManager = instanceManager ?? JavaObject.globalInstanceManager;
+
+  /// Maintains instances stored to communicate with java objects.
+  final InstanceManager instanceManager;
+
+  /// Helper method to convert instances ids to objects.
+  Future<void> createFromInstance(ScrollListener instance) async {
+    if (instanceManager.getIdentifier(instance) == null) {
+      final int identifier = instanceManager.addDartCreatedInstance(instance);
+      return create(identifier);
+    }
+  }
+}
+
+/// Flutter api implementation for [ScrollListener].
+class ScrollListenerFlutterApiImpl extends ScrollListenerFlutterApi {
+  /// Constructs a [ScrollListenerFlutterApiImpl].
+  ScrollListenerFlutterApiImpl({InstanceManager? instanceManager})
+      : instanceManager = instanceManager ?? JavaObject.globalInstanceManager;
+
+  /// Maintains instances stored to communicate with java objects.
+  final InstanceManager instanceManager;
+
+  @override
+  void onScrollOffsetChange(int instanceId, double offset) {
+    final ScrollListener? instance = instanceManager
+        .getInstanceWithWeakReference(instanceId) as ScrollListener?;
+    assert(
+      instance != null,
+      'InstanceManager does not contain a ScrollListener with instanceId: $instanceId',
+    );
+    instance!.onScrollOffsetChange(offset);
+  }
+}
+
 /// Host api implementation for [DownloadListener].
 class WebChromeClientHostApiImpl extends WebChromeClientHostApi {
   /// Constructs a [WebChromeClientHostApiImpl].
@@ -897,6 +956,25 @@ class WebChromeClientFlutterApiImpl extends WebChromeClientFlutterApi {
     );
     if (instance!.onProgressChanged != null) {
       instance.onProgressChanged!(webViewInstance!, progress);
+    }
+  }
+
+  @override
+  void onTitleChange(int instanceId, int webViewInstanceId, String title) {
+    final WebChromeClient? instance = instanceManager
+        .getInstanceWithWeakReference(instanceId) as WebChromeClient?;
+    final WebView? webViewInstance = instanceManager
+        .getInstanceWithWeakReference(webViewInstanceId) as WebView?;
+    assert(
+      instance != null,
+      'InstanceManager does not contain a WebChromeClient with instanceId: $instanceId',
+    );
+    assert(
+      webViewInstance != null,
+      'InstanceManager does not contain a WebView with instanceId: $webViewInstanceId',
+    );
+    if (instance!.onTitleChanged != null) {
+      instance.onTitleChanged!(webViewInstance!, title);
     }
   }
 

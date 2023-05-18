@@ -16,6 +16,7 @@ import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.platform.PlatformViewRegistry;
 import io.flutter.plugins.webviewflutter.GeneratedAndroidWebView.CookieManagerHostApi;
 import io.flutter.plugins.webviewflutter.GeneratedAndroidWebView.DownloadListenerHostApi;
+import io.flutter.plugins.webviewflutter.GeneratedAndroidWebView.ScrollListenerHostApi;
 import io.flutter.plugins.webviewflutter.GeneratedAndroidWebView.FlutterAssetManagerHostApi;
 import io.flutter.plugins.webviewflutter.GeneratedAndroidWebView.InstanceManagerHostApi;
 import io.flutter.plugins.webviewflutter.GeneratedAndroidWebView.JavaObjectHostApi;
@@ -121,6 +122,12 @@ public class WebViewFlutterPlugin implements FlutterPlugin, ActivityAware {
             instanceManager,
             new DownloadListenerHostApiImpl.DownloadListenerCreator(),
             new DownloadListenerFlutterApiImpl(binaryMessenger, instanceManager)));
+    ScrollListenerHostApi.setup(
+        binaryMessenger,
+        new ScrollListenerHostApiImpl(
+            instanceManager,
+            new ScrollListenerHostApiImpl.ScrollListenerCreator(),
+            new ScrollListenerFlutterApiImpl(binaryMessenger, instanceManager)));
     WebSettingsHostApi.setup(
         binaryMessenger,
         new WebSettingsHostApiImpl(

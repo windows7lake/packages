@@ -121,6 +121,10 @@ class TestWebViewPlatformCallbacksHandler
 
   @override
   void onWebResourceError(WebResourceError error) {}
+
+  @override
+  void onScrollOffsetChange(double offset) {
+  }
 }
 
 /// This allows a value of type T or T? to be treated as a value of type T?.

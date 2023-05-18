@@ -212,6 +212,8 @@ abstract class WebViewHostApi {
 
   void setDownloadListener(int instanceId, int? listenerInstanceId);
 
+  void setScrollListener(int instanceId, int? listenerInstanceId);
+
   void setWebChromeClient(int instanceId, int? clientInstanceId);
 
   void setBackgroundColor(int instanceId, int color);
@@ -259,6 +261,8 @@ abstract class WebSettingsHostApi {
   void setAllowFileAccess(int instanceId, bool enabled);
 
   void setTextZoom(int instanceId, int textZoom);
+
+  void setMixedContentModeEnable(int instanceId, bool enabled);
 }
 
 @HostApi(dartHostTestHandler: 'TestJavaScriptChannelHostApi')
@@ -335,6 +339,19 @@ abstract class DownloadListenerFlutterApi {
   );
 }
 
+@HostApi(dartHostTestHandler: 'TestScrollListenerHostApi')
+abstract class ScrollListenerHostApi {
+  void create(int instanceId);
+}
+
+@FlutterApi()
+abstract class ScrollListenerFlutterApi {
+  void onScrollOffsetChange(
+    int instanceId,
+    double offset,
+  );
+}
+
 @HostApi(dartHostTestHandler: 'TestWebChromeClientHostApi')
 abstract class WebChromeClientHostApi {
   void create(int instanceId);
@@ -355,6 +372,8 @@ abstract class FlutterAssetManagerHostApi {
 @FlutterApi()
 abstract class WebChromeClientFlutterApi {
   void onProgressChanged(int instanceId, int webViewInstanceId, int progress);
+
+  void onTitleChange(int instanceId, int webViewInstanceId, String title);
 
   @async
   List<String> onShowFileChooser(

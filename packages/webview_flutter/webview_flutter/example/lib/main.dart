@@ -139,6 +139,9 @@ Page resource error:
           onUrlChange: (UrlChange change) {
             debugPrint('url change to ${change.url}');
           },
+          onTitleChange: (String title) {
+            debugPrint('title change to $title');
+          },
         ),
       )
       ..addJavaScriptChannel(
@@ -149,7 +152,10 @@ Page resource error:
           );
         },
       )
-      ..loadRequest(Uri.parse('https://flutter.dev'));
+      ..setScrollListener((double offset) {
+        debugPrint('offset change to $offset');
+      })
+      ..loadRequest(Uri.parse('https://m.debug.100.com.tw'));
 
     // #docregion platform_features
     if (controller.platform is AndroidWebViewController) {

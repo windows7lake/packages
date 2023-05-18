@@ -1668,4 +1668,8 @@ class TestPlatformCallbacksHandler implements WebViewPlatformCallbacksHandler {
 
   @override
   void onWebResourceError(WebResourceError error) {}
+
+  @override
+  void onScrollOffsetChange(double offset) {
+  }
 }

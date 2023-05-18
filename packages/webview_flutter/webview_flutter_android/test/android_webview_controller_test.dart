@@ -55,6 +55,7 @@ void main() {
     android_webview.WebChromeClient Function({
       void Function(android_webview.WebView webView, int progress)?
           onProgressChanged,
+      void Function(android_webview.WebView, String title)? onTitleChanged,
       Future<List<String>> Function(
         android_webview.WebView webView,
         android_webview.FileChooserParams params,
@@ -80,6 +81,8 @@ void main() {
                   ({
                     void Function(android_webview.WebView, int)?
                         onProgressChanged,
+                    void Function(android_webview.WebView, String)?
+                        onTitleChanged,
                     Future<List<String>> Function(
                       android_webview.WebView webView,
                       android_webview.FileChooserParams params,
@@ -119,6 +122,8 @@ void main() {
                   String url,
                   bool isReload,
                 )? doUpdateVisitedHistory,
+                void Function(android_webview.WebView webView, double offset)?
+                    onScrollOffsetChange,
               }) =>
                   mockWebViewClient ?? MockWebViewClient(),
               createFlutterAssetManager: () =>
@@ -531,6 +536,7 @@ void main() {
             createAndroidWebChromeClient:
                 android_webview.WebChromeClient.detached,
             createDownloadListener: android_webview.DownloadListener.detached,
+            createScrollListener: android_webview.ScrollListener.detached,
           ),
         ),
       );
@@ -574,6 +580,7 @@ void main() {
       final AndroidWebViewController controller = createControllerWithMocks(
         createWebChromeClient: ({
           dynamic onProgressChanged,
+          dynamic onTitleChanged,
           Future<List<String>> Function(
             android_webview.WebView webView,
             android_webview.FileChooserParams params,
@@ -623,6 +630,7 @@ void main() {
       final AndroidWebViewController controller = createControllerWithMocks(
         createWebChromeClient: ({
           dynamic onProgressChanged,
+          dynamic onTitleChanged,
           dynamic onShowFileChooser,
           void Function(
             android_webview.WebChromeClient instance,
@@ -673,6 +681,7 @@ void main() {
       final AndroidWebViewController controller = createControllerWithMocks(
         createWebChromeClient: ({
           dynamic onProgressChanged,
+          dynamic onTitleChanged,
           dynamic onShowFileChooser,
           void Function(
             android_webview.WebChromeClient instance,

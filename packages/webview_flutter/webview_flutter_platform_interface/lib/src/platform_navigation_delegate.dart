@@ -30,6 +30,14 @@ typedef WebResourceErrorCallback = void Function(WebResourceError error);
 /// url of the web view.
 typedef UrlChangeCallback = void Function(UrlChange change);
 
+/// Signature for callbacks that notify the host application of a change to the
+/// title of the web view.
+typedef TitleChangeCallback = void Function(String title);
+
+/// Signature for callbacks that notify the host application of a change to the
+/// scroll offset of the web view.
+typedef ScrollOffsetChangeCallback = void Function(double offset);
+
 /// An interface defining navigation events that occur on the native platform.
 ///
 /// The [PlatformWebViewController] is notifying this delegate on events that
@@ -130,6 +138,15 @@ abstract class PlatformNavigationDelegate extends PlatformInterface {
   Future<void> setOnUrlChange(UrlChangeCallback onUrlChange) {
     throw UnimplementedError(
       'setOnUrlChange is not implemented on the current platform.',
+    );
+  }
+
+  /// Invoked when the underlying web view changes to a new url.
+  ///
+  /// See [PlatformWebViewController.setPlatformNavigationDelegate].
+  Future<void> setOnTitleChange(TitleChangeCallback onTitleChange) {
+    throw UnimplementedError(
+      'setOnTitleChange is not implemented on the current platform.',
     );
   }
 }

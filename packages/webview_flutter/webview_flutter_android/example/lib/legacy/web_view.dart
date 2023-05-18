@@ -41,6 +41,14 @@ typedef PageLoadingCallback = void Function(int progress);
 /// Signature for when a [WebView] has failed to load a resource.
 typedef WebResourceErrorCallback = void Function(WebResourceError error);
 
+/// Signature for callbacks that notify the host application of a change to the
+/// title of the web view.
+typedef TitleChangeCallback = void Function(String title);
+
+/// Signature for callbacks that notify the host application of a change to the
+/// scroll offset of the web view.
+typedef ScrollOffsetChangeCallback = void Function(double offset);
+
 /// A web view widget for showing html content.
 ///
 /// The [WebView] widget wraps around the [AndroidWebView] or
@@ -73,6 +81,8 @@ class WebView extends StatefulWidget {
     this.onPageFinished,
     this.onProgress,
     this.onWebResourceError,
+    this.onTitleChange,
+    this.onScrollOffsetChange,
     this.debuggingEnabled = false,
     this.gestureNavigationEnabled = false,
     this.userAgent,
@@ -195,6 +205,12 @@ class WebView extends StatefulWidget {
   ///
   /// This callback is only called for the main page.
   final WebResourceErrorCallback? onWebResourceError;
+
+  ///
+  final TitleChangeCallback? onTitleChange;
+
+  ///
+  final ScrollOffsetChangeCallback? onScrollOffsetChange;
 
   /// Controls whether WebView debugging is enabled.
   ///
@@ -351,6 +367,13 @@ class _PlatformCallbacksHandler implements WebViewPlatformCallbacksHandler {
   void onWebResourceError(WebResourceError error) {
     if (_webView.onWebResourceError != null) {
       _webView.onWebResourceError!(error);
+    }
+  }
+
+  @override
+  void onScrollOffsetChange(double offset) {
+    if (_webView.onScrollOffsetChange != null) {
+      _webView.onScrollOffsetChange!(offset);
     }
   }
 }

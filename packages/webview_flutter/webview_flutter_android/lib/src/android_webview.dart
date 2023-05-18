@@ -383,6 +383,11 @@ class WebView extends JavaObject {
     return api.setDownloadListenerFromInstance(this, listener);
   }
 
+  /// This will replace the current handler.
+  Future<void> setScrollListener(ScrollListener? listener) {
+    return api.setScrollListenerFromInstance(this, listener);
+  }
+
   /// Sets the chrome handler.
   ///
   /// This is an implementation of [WebChromeClient] for use in handling
@@ -966,11 +971,53 @@ class DownloadListener extends JavaObject {
   }
 }
 
+/// ScrollListener
+class ScrollListener extends JavaObject {
+  /// Constructs a [ScrollListener].
+  ScrollListener({
+    required this.onScrollOffsetChange,
+    @visibleForTesting super.binaryMessenger,
+    @visibleForTesting super.instanceManager,
+  }) : super.detached() {
+    AndroidWebViewFlutterApis.instance.ensureSetUp();
+    api.createFromInstance(this);
+  }
+
+  /// Constructs a [ScrollListener] without creating the associated Java
+  /// object.
+  ///
+  /// This should only be used by subclasses created by this library or to
+  /// create copies.
+  @protected
+  ScrollListener.detached({
+    required this.onScrollOffsetChange,
+    super.binaryMessenger,
+    super.instanceManager,
+  }) : super.detached();
+
+  /// Pigeon Host Api implementation for [ScrollListener].
+  @visibleForTesting
+  static ScrollListenerHostApiImpl api = ScrollListenerHostApiImpl();
+
+  /// Notify the host application that a file should be downloaded.
+  final void Function(double offset) onScrollOffsetChange;
+
+  @override
+  ScrollListener copy() {
+    return ScrollListener.detached(
+      onScrollOffsetChange: onScrollOffsetChange,
+      binaryMessenger: _api.binaryMessenger,
+      instanceManager: _api.instanceManager,
+    );
+  }
+}
+
 /// Handles JavaScript dialogs, favicons, titles, and the progress for [WebView].
 class WebChromeClient extends JavaObject {
   /// Constructs a [WebChromeClient].
   WebChromeClient({
     this.onProgressChanged,
+    this.onTitleChanged,
     this.onShowFileChooser,
     this.onPermissionRequest,
     @visibleForTesting super.binaryMessenger,
@@ -988,6 +1035,7 @@ class WebChromeClient extends JavaObject {
   @protected
   WebChromeClient.detached({
     this.onProgressChanged,
+    this.onTitleChanged,
     this.onShowFileChooser,
     this.onPermissionRequest,
     super.binaryMessenger,
@@ -1000,6 +1048,9 @@ class WebChromeClient extends JavaObject {
 
   /// Notify the host application that a file should be downloaded.
   final void Function(WebView webView, int progress)? onProgressChanged;
+
+  /// Notify the title of the current page.
+  final void Function(WebView webView, String title)? onTitleChanged;
 
   /// Indicates the client should show a file chooser.
   ///
@@ -1057,6 +1108,7 @@ class WebChromeClient extends JavaObject {
   WebChromeClient copy() {
     return WebChromeClient.detached(
       onProgressChanged: onProgressChanged,
+      onTitleChanged: onTitleChanged,
       onShowFileChooser: onShowFileChooser,
       binaryMessenger: _api.binaryMessenger,
       instanceManager: _api.instanceManager,

@@ -355,6 +355,11 @@ class WebViewController {
   Future<void> setUserAgent(String? userAgent) {
     return platform.setUserAgent(userAgent);
   }
+
+  /// setScrollListener
+  Future<void> setScrollListener(ScrollOffsetChangeCallback listener) {
+    return platform.setScrollListener(listener);
+  }
 }
 
 /// Permissions request when web content requests access to protected resources.

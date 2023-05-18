@@ -138,6 +138,22 @@ class WebKitWebViewController extends PlatformWebViewController {
       },
     );
 
+    _webView.addObserver(
+      _webView,
+      keyPath: 'title',
+      options: <NSKeyValueObservingOptions>{
+        NSKeyValueObservingOptions.newValue,
+      },
+    );
+
+    _webView.addObserver(
+      _webView,
+      keyPath: 'scrollView.contentOffset',
+      options: <NSKeyValueObservingOptions>{
+        NSKeyValueObservingOptions.newValue,
+      },
+    );
+
     final WeakReference<WebKitWebViewController> weakThis =
         WeakReference<WebKitWebViewController>(this);
     _uiDelegate = _webKitParams.webKitProxy.createUIDelegate(
@@ -242,6 +258,22 @@ class WebKitWebViewController extends PlatformWebViewController {
               urlChangeCallback(UrlChange(url: await url?.getAbsoluteString()));
             }
             break;
+          case 'title':
+            final TitleChangeCallback? titleChangeCallback =
+                controller._currentNavigationDelegate?._onTitleChange;
+            if (titleChangeCallback != null) {
+              final String? title = change[NSKeyValueChangeKey.newValue] as String?;
+              titleChangeCallback(title ?? '');
+            }
+            break;
+          case 'scrollView.contentOffset':
+            final ScrollOffsetChangeCallback? scrollOffsetChangeCallback =
+                controller._scrollOffsetChangeCallback;
+            if (scrollOffsetChangeCallback != null) {
+              final double? offset = change[NSKeyValueChangeKey.newValue] as double?;
+              scrollOffsetChangeCallback(offset ?? 0);
+            }
+            break;
         }
       };
     }),
@@ -257,6 +289,8 @@ class WebKitWebViewController extends PlatformWebViewController {
   WebKitNavigationDelegate? _currentNavigationDelegate;
 
   void Function(PlatformWebViewPermissionRequest)? _onPermissionRequestCallback;
+
+  ScrollOffsetChangeCallback? _scrollOffsetChangeCallback;
 
   WebKitWebViewControllerCreationParams get _webKitParams =>
       params as WebKitWebViewControllerCreationParams;
@@ -530,6 +564,11 @@ class WebKitWebViewController extends PlatformWebViewController {
   ) async {
     _onPermissionRequestCallback = onPermissionRequest;
   }
+
+  @override
+  Future<void> setScrollListener(ScrollOffsetChangeCallback listener) async {
+    _scrollOffsetChangeCallback = listener;
+  }
 }
 
 /// An implementation of [JavaScriptChannelParams] with the WebKit api.
@@ -776,6 +815,7 @@ class WebKitNavigationDelegate extends PlatformNavigationDelegate {
   WebResourceErrorCallback? _onWebResourceError;
   NavigationRequestCallback? _onNavigationRequest;
   UrlChangeCallback? _onUrlChange;
+  TitleChangeCallback? _onTitleChange;
 
   @override
   Future<void> setOnPageFinished(PageEventCallback onPageFinished) async {
@@ -809,6 +849,11 @@ class WebKitNavigationDelegate extends PlatformNavigationDelegate {
   @override
   Future<void> setOnUrlChange(UrlChangeCallback onUrlChange) async {
     _onUrlChange = onUrlChange;
+  }
+
+  @override
+  Future<void> setOnTitleChange(TitleChangeCallback onTitleChange) async {
+    _onTitleChange = onTitleChange;
   }
 }
 

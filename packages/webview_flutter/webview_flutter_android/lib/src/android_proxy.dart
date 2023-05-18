@@ -22,6 +22,7 @@ class AndroidWebViewProxy {
     this.createFlutterAssetManager = android_webview.FlutterAssetManager.new,
     this.createJavaScriptChannel = android_webview.JavaScriptChannel.new,
     this.createDownloadListener = android_webview.DownloadListener.new,
+    this.createScrollListener = android_webview.ScrollListener.new,
   });
 
   /// Constructs a [android_webview.WebView].
@@ -31,6 +32,7 @@ class AndroidWebViewProxy {
   final android_webview.WebChromeClient Function({
     void Function(android_webview.WebView webView, int progress)?
         onProgressChanged,
+  void Function(android_webview.WebView webView, String title)? onTitleChanged,
     Future<List<String>> Function(
       android_webview.WebView webView,
       android_webview.FileChooserParams params,
@@ -86,6 +88,11 @@ class AndroidWebViewProxy {
       int contentLength,
     ) onDownloadStart,
   }) createDownloadListener;
+
+  /// Constructs a [android_webview.ScrollListener].
+  final android_webview.ScrollListener Function({
+    required void Function(double offset) onScrollOffsetChange,
+  }) createScrollListener;
 
   /// Enables debugging of web contents (HTML / CSS / JavaScript) loaded into any WebViews of this application.
   ///

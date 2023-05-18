@@ -117,6 +117,14 @@ class AndroidWebViewController extends PlatformWebViewController {
         }
       };
     }),
+    onTitleChanged: withWeakReferenceTo(this,
+            (WeakReference<AndroidWebViewController> weakReference) {
+      return (android_webview.WebView webView, String title) {
+        if (weakReference.target?._currentNavigationDelegate?._onTitleChange !=  null) {
+          weakReference.target!._currentNavigationDelegate!._onTitleChange!(title);
+        }
+      };
+    }),
     onShowFileChooser: withWeakReferenceTo(
       this,
       (WeakReference<AndroidWebViewController> weakReference) {
@@ -316,6 +324,13 @@ class AndroidWebViewController extends PlatformWebViewController {
     handler.setOnLoadRequest(loadRequest);
     _webView.setWebViewClient(handler.androidWebViewClient);
     _webView.setDownloadListener(handler.androidDownloadListener);
+  }
+
+  @override
+  Future<void> setScrollListener(ScrollOffsetChangeCallback listener) async {
+    final android_webview.ScrollListener scrollListener =
+        android_webview.ScrollListener(onScrollOffsetChange: listener);
+    _webView.setScrollListener(scrollListener);
   }
 
   @override
@@ -962,6 +977,7 @@ class AndroidNavigationDelegate extends PlatformNavigationDelegate {
   NavigationRequestCallback? _onNavigationRequest;
   LoadRequestCallback? _onLoadRequest;
   UrlChangeCallback? _onUrlChange;
+  TitleChangeCallback? _onTitleChange;
 
   void _handleNavigation(
     String url, {
@@ -1046,5 +1062,10 @@ class AndroidNavigationDelegate extends PlatformNavigationDelegate {
   @override
   Future<void> setOnUrlChange(UrlChangeCallback onUrlChange) async {
     _onUrlChange = onUrlChange;
+  }
+
+  @override
+  Future<void> setOnTitleChange(TitleChangeCallback onTitleChange) async {
+    _onTitleChange = onTitleChange;
   }
 }

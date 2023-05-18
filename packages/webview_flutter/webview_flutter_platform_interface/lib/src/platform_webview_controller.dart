@@ -171,6 +171,12 @@ abstract class PlatformWebViewController extends PlatformInterface {
         'setPlatformNavigationDelegate is not implemented on the current platform');
   }
 
+  /// setScrollListener
+  Future<void> setScrollListener(ScrollOffsetChangeCallback listener) {
+    throw UnimplementedError(
+        'setPlatformNavigationDelegate is not implemented on the current platform');
+  }
+
   /// Runs the given JavaScript in the context of the current page.
   ///
   /// The Future completes with an error if a JavaScript error occurred.

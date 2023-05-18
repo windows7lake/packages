@@ -51,6 +51,11 @@ public class WebChromeClientHostApiImpl implements WebChromeClientHostApi {
       flutterApi.onProgressChanged(this, view, (long) progress, reply -> {});
     }
 
+    @Override
+    public void onReceivedTitle(WebView view, String title) {
+      flutterApi.onTitleChange(this, view, title, reply -> {});
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressWarnings("LambdaLast")
     @Override

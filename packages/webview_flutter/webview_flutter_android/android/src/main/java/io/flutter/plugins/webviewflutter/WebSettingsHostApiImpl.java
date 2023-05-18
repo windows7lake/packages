@@ -4,6 +4,7 @@
 
 package io.flutter.plugins.webviewflutter;
 
+import android.os.Build;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import androidx.annotation.NonNull;
@@ -131,5 +132,15 @@ public class WebSettingsHostApiImpl implements WebSettingsHostApi {
   public void setTextZoom(@NonNull Long instanceId, @NonNull Long textZoom) {
     final WebSettings webSettings = Objects.requireNonNull(instanceManager.getInstance(instanceId));
     webSettings.setTextZoom(textZoom.intValue());
+  }
+
+  @Override
+  public void setMixedContentModeEnable(@NonNull Long instanceId, @NonNull Boolean enabled) {
+    final WebSettings webSettings = Objects.requireNonNull(instanceManager.getInstance(instanceId));
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      webSettings.setMixedContentMode(enabled ?
+              WebSettings.MIXED_CONTENT_ALWAYS_ALLOW :
+              WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+    }
   }
 }

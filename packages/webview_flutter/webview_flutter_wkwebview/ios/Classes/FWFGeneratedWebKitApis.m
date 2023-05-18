@@ -1821,7 +1821,13 @@ void FWFNSObjectHostApiSetup(id<FlutterBinaryMessenger> binaryMessenger,
     [self writeByte:129];
     [self writeValue:[value toList]];
   } else {
-    [super writeValue:value];
+    NSString *pointStr = [NSString stringWithFormat:@"%@",value];
+    if ([pointStr hasPrefix:@"NSPoint"]) {
+      CGPoint point = CGPointFromString(pointStr);
+      [super writeValue:[NSNumber numberWithDouble:point.y]];
+    } else {
+      [super writeValue:value];
+    }
   }
 }
 @end

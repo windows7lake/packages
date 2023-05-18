@@ -124,8 +124,11 @@ Page resource error:
             debugPrint('allowing navigation to ${request.url}');
             return NavigationDecision.navigate;
           })
-          ..setOnUrlChange((UrlChange change) {
+          ..setOnUrlChange((UrlChange change) async {
             debugPrint('url change to ${change.url}');
+          })
+          ..setOnTitleChange((String title) {
+            debugPrint('title change to $title');
           }),
       )
       ..addJavaScriptChannel(JavaScriptChannelParams(
@@ -144,8 +147,11 @@ Page resource error:
           request.grant();
         },
       )
+      ..setScrollListener((double offset) {
+        debugPrint('offset change to $offset');
+      })
       ..loadRequest(LoadRequestParams(
-        uri: Uri.parse('https://flutter.dev'),
+        uri: Uri.parse('https://m.debug.100.com.tw'),
       ));
   }
 
