@@ -154,6 +154,7 @@ Page resource error:
       })
       ..loadRequest(LoadRequestParams(
         uri: Uri.parse('https://m.debug.100.com.tw'),
+        // uri: Uri.parse('http://line.me/ti/p/Ocyo72G2il'),
       ));
   }
 

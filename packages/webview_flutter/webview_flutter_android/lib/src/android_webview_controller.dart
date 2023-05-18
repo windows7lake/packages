@@ -13,6 +13,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
 import 'android_proxy.dart';
@@ -1000,6 +1001,23 @@ class AndroidNavigationDelegate extends PlatformNavigationDelegate {
         isMainFrame: isForMainFrame,
       ),
     );
+
+    // Handle intent
+    if (url.startsWith('intent://') || url.startsWith('market://')) {
+      debugPrint('handleIntent: $url');
+      Uri uri = Uri.parse(url);
+      if (url.startsWith('intent://') && url.contains('package=')) {
+        String path = url.substring(url.indexOf('package=') + 8);
+        if (path.contains(';')) {
+          path = path.substring(0, path.indexOf(';'));
+        }
+        uri = Uri.parse('market://details?id=$path');
+      }
+      try {
+        launchUrl(uri);
+        return;
+      } catch (e) {}
+    }
 
     if (returnValue is NavigationDecision &&
         returnValue == NavigationDecision.navigate) {
