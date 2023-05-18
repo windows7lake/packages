@@ -1,3 +1,10 @@
+## 3.7.0+1
+
+* Add listener for: title, url and scroll offset
+* Android support：file chooser and image/video capture
+* Android support：intent and market schema support
+* iOS support: add listener for canGoBack
+
 ## 3.7.0
 
 * Adds support to accept third party cookies. See

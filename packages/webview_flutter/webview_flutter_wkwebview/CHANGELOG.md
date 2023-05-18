@@ -1,3 +1,10 @@
+## 3.4.3+1
+
+* Add listener for: title, url and scroll offset
+* Android support：file chooser and image/video capture
+* Android support：intent and market schema support
+* iOS support: add listener for canGoBack
+
 ## 3.4.3
 
 * Replace `describeEnum` with the `name` getter.
