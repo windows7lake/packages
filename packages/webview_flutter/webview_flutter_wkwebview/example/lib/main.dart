@@ -130,6 +130,9 @@ Page resource error:
           })
           ..setOnTitleChange((String title) {
             debugPrint('title change to $title');
+          })
+          ..setOnCanGoBackChange((bool enable) {
+            debugPrint('enable: $enable');
           }),
       )
       ..addJavaScriptChannel(JavaScriptChannelParams(

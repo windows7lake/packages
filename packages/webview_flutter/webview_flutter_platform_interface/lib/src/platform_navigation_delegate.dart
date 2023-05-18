@@ -38,6 +38,9 @@ typedef TitleChangeCallback = void Function(String title);
 /// scroll offset of the web view.
 typedef ScrollOffsetChangeCallback = void Function(double offset);
 
+///
+typedef GoBackChangeCallback = void Function(bool enable);
+
 /// An interface defining navigation events that occur on the native platform.
 ///
 /// The [PlatformWebViewController] is notifying this delegate on events that
@@ -147,6 +150,13 @@ abstract class PlatformNavigationDelegate extends PlatformInterface {
   Future<void> setOnTitleChange(TitleChangeCallback onTitleChange) {
     throw UnimplementedError(
       'setOnTitleChange is not implemented on the current platform.',
+    );
+  }
+
+  /// setOnCanGoBackChange
+  Future<void> setOnCanGoBackChange(GoBackChangeCallback onCanGoBackChange) {
+    throw UnimplementedError(
+      'setOnCanGoBackChange is not implemented on the current platform.',
     );
   }
 }

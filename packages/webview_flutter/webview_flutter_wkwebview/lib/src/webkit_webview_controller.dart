@@ -154,6 +154,14 @@ class WebKitWebViewController extends PlatformWebViewController {
       },
     );
 
+    _webView.addObserver(
+      _webView,
+      keyPath: 'canGoBack',
+      options: <NSKeyValueObservingOptions>{
+        NSKeyValueObservingOptions.newValue,
+      },
+    );
+
     final WeakReference<WebKitWebViewController> weakThis =
         WeakReference<WebKitWebViewController>(this);
     _uiDelegate = _webKitParams.webKitProxy.createUIDelegate(
@@ -272,6 +280,14 @@ class WebKitWebViewController extends PlatformWebViewController {
             if (scrollOffsetChangeCallback != null) {
               final double? offset = change[NSKeyValueChangeKey.newValue] as double?;
               scrollOffsetChangeCallback(offset ?? 0);
+            }
+            break;
+          case 'canGoBack':
+            final GoBackChangeCallback? goBackChangeCallback =
+                controller._currentNavigationDelegate?._onCanGoBackChange;
+            if (goBackChangeCallback != null) {
+              final bool? enable = change[NSKeyValueChangeKey.newValue] as bool?;
+              goBackChangeCallback(enable ?? false);
             }
             break;
         }
@@ -816,6 +832,7 @@ class WebKitNavigationDelegate extends PlatformNavigationDelegate {
   NavigationRequestCallback? _onNavigationRequest;
   UrlChangeCallback? _onUrlChange;
   TitleChangeCallback? _onTitleChange;
+  GoBackChangeCallback? _onCanGoBackChange;
 
   @override
   Future<void> setOnPageFinished(PageEventCallback onPageFinished) async {
@@ -854,6 +871,11 @@ class WebKitNavigationDelegate extends PlatformNavigationDelegate {
   @override
   Future<void> setOnTitleChange(TitleChangeCallback onTitleChange) async {
     _onTitleChange = onTitleChange;
+  }
+
+  @override
+  Future<void> setOnCanGoBackChange(GoBackChangeCallback onCanGoBackChange) async {
+    _onCanGoBackChange = onCanGoBackChange;
   }
 }
 

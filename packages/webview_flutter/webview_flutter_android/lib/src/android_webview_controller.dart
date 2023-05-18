@@ -1089,4 +1089,8 @@ class AndroidNavigationDelegate extends PlatformNavigationDelegate {
   Future<void> setOnTitleChange(TitleChangeCallback onTitleChange) async {
     _onTitleChange = onTitleChange;
   }
+
+  @override
+  Future<void> setOnCanGoBackChange(GoBackChangeCallback onCanGoBackChange) async {
+  }
 }
