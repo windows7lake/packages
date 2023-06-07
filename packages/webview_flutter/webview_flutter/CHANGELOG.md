@@ -1,3 +1,7 @@
+## 4.2.0+2
+
+* Add dispose method to removeObserver
+
 ## 4.2.0+1
 
 * Add listener for: title, url and scroll offset

@@ -1,3 +1,7 @@
+## 3.7.0+2
+
+* Add dispose method
+
 ## 3.7.0+1
 
 * Add listener for: title, url and scroll offset
