@@ -360,6 +360,11 @@ class WebViewController {
   Future<void> setScrollListener(ScrollOffsetChangeCallback listener) {
     return platform.setScrollListener(listener);
   }
+
+  ///
+  Future<void> dispose() {
+    return platform.dispose();
+  }
 }
 
 /// Permissions request when web content requests access to protected resources.

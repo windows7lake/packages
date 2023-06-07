@@ -34,7 +34,8 @@ import 'webview_controller.dart';
 ///       webViewWidget.platform as AndroidWebViewWidget;
 /// }
 /// ```
-class WebViewWidget extends StatelessWidget {
+///
+class WebViewWidget extends StatefulWidget {
   /// Constructs a [WebViewWidget].
   ///
   /// See [WebViewWidget.fromPlatformCreationParams] for setting parameters for
@@ -52,6 +53,7 @@ class WebViewWidget extends StatelessWidget {
             layoutDirection: layoutDirection,
             gestureRecognizers: gestureRecognizers,
           ),
+          webViewController: controller,
         );
 
   /// Constructs a [WebViewWidget] from creation params for a specific platform.
@@ -91,10 +93,22 @@ class WebViewWidget extends StatelessWidget {
   WebViewWidget.fromPlatformCreationParams({
     Key? key,
     required PlatformWebViewWidgetCreationParams params,
-  }) : this.fromPlatform(key: key, platform: PlatformWebViewWidget(params));
+    required WebViewController webViewController,
+  }) : this.fromPlatform(
+          key: key,
+          platform: PlatformWebViewWidget(params),
+          webViewController: webViewController,
+        );
 
   /// Constructs a [WebViewWidget] from a specific platform implementation.
-  WebViewWidget.fromPlatform({super.key, required this.platform});
+  WebViewWidget.fromPlatform({
+    super.key,
+    required this.platform,
+    required this.webViewController,
+  });
+
+  ///
+  final WebViewController webViewController;
 
   /// Implementation of [PlatformWebViewWidget] for the current platform.
   final PlatformWebViewWidget platform;
@@ -116,7 +130,18 @@ class WebViewWidget extends StatelessWidget {
       platform.params.gestureRecognizers;
 
   @override
+  State<WebViewWidget> createState() => _WebViewWidgetState();
+}
+
+class _WebViewWidgetState extends State<WebViewWidget> {
+  @override
   Widget build(BuildContext context) {
-    return platform.build(context);
+    return widget.platform.build(context);
+  }
+
+  @override
+  void dispose() {
+    widget.webViewController.dispose();
+    super.dispose();
   }
 }
