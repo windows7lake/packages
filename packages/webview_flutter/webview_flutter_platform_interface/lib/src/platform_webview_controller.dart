@@ -276,6 +276,13 @@ abstract class PlatformWebViewController extends PlatformInterface {
       'setOnPermissionRequest is not implemented on the current platform',
     );
   }
+
+  /// Disposes the WebView
+  Future<void> dispose() {
+    throw UnimplementedError(
+      'dispose is not implemented on the current platform',
+    );
+  }
 }
 
 /// Describes the parameters necessary for registering a JavaScript channel.

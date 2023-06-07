@@ -25,6 +25,7 @@ void main() {
 
       await tester.pumpWidget(WebViewWidget.fromPlatform(
         platform: mockPlatformWebViewWidget,
+        webViewController: WebViewController(),
       ));
 
       expect(find.byType(Container), findsOneWidget);

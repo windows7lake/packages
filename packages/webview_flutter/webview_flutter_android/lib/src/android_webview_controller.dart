@@ -460,6 +460,10 @@ class AndroidWebViewController extends PlatformWebViewController {
   ) async {
     _onPermissionRequestCallback = onPermissionRequest;
   }
+
+  @override
+  Future<void> dispose() async {
+  }
 }
 
 /// Android implementation of [PlatformWebViewPermissionRequest].

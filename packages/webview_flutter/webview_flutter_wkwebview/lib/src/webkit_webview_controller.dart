@@ -270,7 +270,8 @@ class WebKitWebViewController extends PlatformWebViewController {
             final TitleChangeCallback? titleChangeCallback =
                 controller._currentNavigationDelegate?._onTitleChange;
             if (titleChangeCallback != null) {
-              final String? title = change[NSKeyValueChangeKey.newValue] as String?;
+              final String? title =
+                  change[NSKeyValueChangeKey.newValue] as String?;
               titleChangeCallback(title ?? '');
             }
             break;
@@ -278,7 +279,8 @@ class WebKitWebViewController extends PlatformWebViewController {
             final ScrollOffsetChangeCallback? scrollOffsetChangeCallback =
                 controller._scrollOffsetChangeCallback;
             if (scrollOffsetChangeCallback != null) {
-              final double? offset = change[NSKeyValueChangeKey.newValue] as double?;
+              final double? offset =
+                  change[NSKeyValueChangeKey.newValue] as double?;
               scrollOffsetChangeCallback(offset ?? 0);
             }
             break;
@@ -286,7 +288,8 @@ class WebKitWebViewController extends PlatformWebViewController {
             final GoBackChangeCallback? goBackChangeCallback =
                 controller._currentNavigationDelegate?._onCanGoBackChange;
             if (goBackChangeCallback != null) {
-              final bool? enable = change[NSKeyValueChangeKey.newValue] as bool?;
+              final bool? enable =
+                  change[NSKeyValueChangeKey.newValue] as bool?;
               goBackChangeCallback(enable ?? false);
             }
             break;
@@ -585,6 +588,15 @@ class WebKitWebViewController extends PlatformWebViewController {
   Future<void> setScrollListener(ScrollOffsetChangeCallback listener) async {
     _scrollOffsetChangeCallback = listener;
   }
+
+  @override
+  Future<void> dispose() async {
+    _webView.removeObserver(_webView, keyPath: 'estimatedProgress');
+    _webView.removeObserver(_webView, keyPath: 'URL');
+    _webView.removeObserver(_webView, keyPath: 'title');
+    _webView.removeObserver(_webView, keyPath: 'scrollView.contentOffset');
+    _webView.removeObserver(_webView, keyPath: 'canGoBack');
+  }
 }
 
 /// An implementation of [JavaScriptChannelParams] with the WebKit api.
@@ -874,7 +886,8 @@ class WebKitNavigationDelegate extends PlatformNavigationDelegate {
   }
 
   @override
-  Future<void> setOnCanGoBackChange(GoBackChangeCallback onCanGoBackChange) async {
+  Future<void> setOnCanGoBackChange(
+      GoBackChangeCallback onCanGoBackChange) async {
     _onCanGoBackChange = onCanGoBackChange;
   }
 }
