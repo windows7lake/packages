@@ -153,8 +153,10 @@ Page resource error:
         debugPrint('offset change to $offset');
       })
       ..loadRequest(LoadRequestParams(
-        uri: Uri.parse('https://m.debug.100.com.tw'),
-        // uri: Uri.parse('http://line.me/ti/p/Ocyo72G2il'),
+        // uri: Uri.parse('https://m.debug.100.com.tw'),
+        // uri: Uri.parse('market://details?id=com.addcn.android.design591'),
+        // uri: Uri.parse('https://forms.gle/rK3Z2GrGhc5JY4vE9'),
+        uri: Uri.parse('http://line.me/ti/p/Ocyo72G2il'),
       ));
   }
 

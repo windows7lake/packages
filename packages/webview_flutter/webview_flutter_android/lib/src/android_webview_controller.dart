@@ -10,6 +10,7 @@ import 'dart:async';
 // ignore: unnecessary_import
 import 'dart:typed_data';
 
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -1009,18 +1010,9 @@ class AndroidNavigationDelegate extends PlatformNavigationDelegate {
     // Handle intent
     if (url.startsWith('intent://') || url.startsWith('market://')) {
       debugPrint('handleIntent: $url');
-      Uri uri = Uri.parse(url);
-      if (url.startsWith('intent://') && url.contains('package=')) {
-        String path = url.substring(url.indexOf('package=') + 8);
-        if (path.contains(';')) {
-          path = path.substring(0, path.indexOf(';'));
-        }
-        uri = Uri.parse('market://details?id=$path');
-      }
-      try {
-        launchUrl(uri);
-        return;
-      } catch (e) {}
+      const AndroidIntent intent = AndroidIntent(action: '');
+      intent.launchUri(url);
+      return;
     }
 
     if (returnValue is NavigationDecision &&

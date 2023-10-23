@@ -20,7 +20,10 @@ dependencies:
     # the parent directory to use the current plugin's version.
     path: ../
   webview_flutter_platform_interface:
-    path: ../../webview_flutter_platform_interface
+    version: ^2.3.0+2
+    hosted:
+      name: webview_flutter_platform_interface
+      url: http://192.168.8.75:4000/
 
 dev_dependencies:
   espresso: ^0.2.0
