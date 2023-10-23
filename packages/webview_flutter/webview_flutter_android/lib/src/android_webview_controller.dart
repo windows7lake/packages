@@ -14,7 +14,6 @@ import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
 import 'android_proxy.dart';

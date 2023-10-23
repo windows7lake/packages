@@ -21,7 +21,7 @@ dependencies:
   flutter:
     sdk: flutter
   webview_flutter_android:
-    version: ^3.7.0+2
+    version: ^3.7.0+3
     hosted:
       name: webview_flutter_android
       url: http://192.168.8.75:4000/

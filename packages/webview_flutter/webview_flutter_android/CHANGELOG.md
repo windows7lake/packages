@@ -1,3 +1,7 @@
+## 3.7.0+3
+
+* Android support：intent and market schema support
+
 ## 3.7.0+2
 
 * Add dispose method

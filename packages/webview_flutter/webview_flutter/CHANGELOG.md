@@ -1,3 +1,7 @@
+## 4.2.0+3
+
+* Android support：intent and market schema support
+
 ## 4.2.0+2
 
 * Add dispose method to removeObserver
