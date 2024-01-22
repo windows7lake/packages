@@ -1,3 +1,7 @@
+## 3.7.0+4
+
+* Fixes file chooser not working on Android.
+
 ## 3.7.0+3
 
 * Android support：intent and market schema support
