@@ -98,6 +98,7 @@ class AndroidWebViewController extends PlatformWebViewController {
     _webView.settings.setBuiltInZoomControls(true);
 
     _webView.setWebChromeClient(_webChromeClient);
+    _webChromeClient.setSynchronousReturnValueForOnShowFileChooser(true);
   }
 
   AndroidWebViewControllerCreationParams get _androidWebViewParams =>
@@ -137,7 +138,6 @@ class AndroidWebViewController extends PlatformWebViewController {
               FileSelectorParams._fromFileChooserParams(params),
             );
           } else {
-            _webChromeClient.setSynchronousReturnValueForOnShowFileChooser(true);
             return filePickerHandler(FileSelectorParams._fromFileChooserParams(params));
           }
           return <String>[];
